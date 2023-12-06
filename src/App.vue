@@ -1,52 +1,64 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import Greet from "./components/Greet.vue";
-</script>
+// App.vue
 
 <template>
-  <div class="container">
-    <h1>Welcome to Tauri!</h1>
-
-    <div class="row">
-      <a href="https://vitejs.dev" target="_blank">
-        <img src="/vite.svg" class="logo vite" alt="Vite logo" />
-      </a>
-      <a href="https://tauri.app" target="_blank">
-        <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
-      </a>
-      <a href="https://vuejs.org/" target="_blank">
-        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-      </a>
-    </div>
-
-    <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
-
-    <p>
-      Recommended IDE setup:
-      <a href="https://code.visualstudio.com/" target="_blank">VS Code</a>
-      +
-      <a href="https://github.com/johnsoncodehk/volar" target="_blank">Volar</a>
-      +
-      <a href="https://github.com/tauri-apps/tauri-vscode" target="_blank"
-        >Tauri</a
-      >
-      +
-      <a href="https://github.com/rust-lang/rust-analyzer" target="_blank"
-        >rust-analyzer</a
-      >
-    </p>
-
-    <Greet />
+  <div id="app">
+    <Header />
+    <br />
+    <NewEntryForm @entry-added="updateEntryList" />
+    <EntryList :entries="entries" />
   </div>
 </template>
 
-<style scoped>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
+<script>
+import Header from '@/components/Header.vue';
+import NewEntryForm from '@/components/NewEntryForm.vue';
+import EntryList from '@/components/EntryList.vue';
 
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #249b73);
+export default {
+  components: {
+    Header,
+    NewEntryForm,
+    EntryList,
+  },
+  data() {
+    return {
+      entries: [], // Initialize with an empty array
+    };
+  },
+  methods: {
+    updateEntryList(newEntries) {
+  console.log('Updating entry list with:', newEntries);
+
+  // Update the entry list with the new entries
+  this.entries = newEntries;
+
+  // Assuming you want to persist entries to a JSON file after each update
+  this.saveEntriesToFile();
+
+  console.log('Entry list updated successfully');
+},
+    saveEntriesToFile() {
+      // Call Tauri function to save entries to a JSON file
+      this.$tauri
+        .invoke('save_entries_to_file', { entries: this.entries })
+        .then(response => {
+          // Handle the response if needed
+          console.log(response);
+        })
+        .catch(error => {
+          console.error(error);
+          // Handle errors if needed
+        });
+    },
+  },
+};
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>

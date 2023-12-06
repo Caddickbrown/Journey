@@ -1,12 +1,22 @@
-import { createApp } from "vue";
-import "./styles.css";
-import App from "./App.vue";
+import { createApp } from 'vue';
+import App from './App.vue';
+import { initializeTauri } from './tauri.js'; // create a separate file for Tauri initialization
 
-createApp(App).mount("#app");
+const app = createApp(App);
+initializeTauri(app);
 
-import { createApp } from 'vue'
-import App from './App.vue'
+const vm = app.mount('#app');
 
-const app = createApp(App)
-
-app.mount('#app')
+// Use the mounted lifecycle hook to ensure Tauri is initialized
+vm.$nextTick(() => {
+  app.config.globalProperties.$tauri
+    .invoke({
+      cmd: 'new_entry',
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
