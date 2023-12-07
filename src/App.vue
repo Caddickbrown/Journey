@@ -1,6 +1,10 @@
 // App.vue
 
 <template>
+  <header>
+    <h1>Journey</h1>
+  </header>
+
   <div id="app">
     <Header />
     <br />
@@ -60,5 +64,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+header {
+  background-color: #0094f6;
+  color: #ffffff;
+  padding: 10px;
+  text-align: center;
+  top: auto;
 }
 </style>

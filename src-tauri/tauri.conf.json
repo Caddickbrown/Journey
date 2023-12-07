@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "journey",
+    "productName": "Journey",
     "version": "0.0.0"
   },
   "tauri": {
@@ -36,10 +36,11 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "journey",
+        "title": "Journey",
         "width": 800,
         "height": 600,
-        "titleBarStyle": "Transparent"
+        "hiddenTitle": true,
+        "titleBarStyle": "Overlay"
       }
     ]
   }
